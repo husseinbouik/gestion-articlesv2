@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" >
+  <link rel="stylesheet" href="gesarticles.css" >
+  <script src="https://kit.fontawesome.com/0e22389e8c.js" crossorigin="anonymous"></script>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+  <script src="gesarticles.js" defer></script>
+  <title>Document</title>
+</head>
+
+<body>
+  <div class="container">
+    <div class="hc">
+      <div class="header">
+        <h2>Formulaire des produits de vente</h2>
+      </div>
+      <form id="form" class="form"  >
+        <div class="form-control">
+          <div><label for="nom">Nom</label></div>
+          <div><input type="text" placeholder="Nom" id="nom" >
+            <i class="fas fa-check-circle"></i>
+            <i class="fas fa-exclamation-circle"></i>
+            <small>Error message</small>
+            <samp></samp></div>
+        </div>
+        <div class="form-control">
+          <div><label for="prix">Prix</label></div>
+          <div> <input type="text" placeholder="1500$" id="prix" >
+            <i class="fas fa-check-circle"></i>
+            <i class="fas fa-exclamation-circle"></i>
+            <small>Error message</small>
+            <samp></samp></div>
+        </div>
+        <div class="form-control">
+          <div> <label for="marque">Marque</label></div>
+          <div><input type="text" placeholder="The Ordinary" id="marque" >
+            <i class="fas fa-check-circle"></i>
+            <i class="fas fa-exclamation-circle"></i>
+            <small>Error message</small>
+            <samp></samp></div>
+        </div>
+        <div class="form-control">
+          <div><label for="date">Date Production:</label></div>
+          <div><input type="date"  id="date" >
+            <i class="fas fa-check-circle"></i>
+            <i class="fas fa-exclamation-circle"></i>
+            <small>Error message</small>
+            <samp></samp></div>
+        </div>
+        <div class="form-control">
+          <div><label>Type:</label></div>
+          <div><select title="type" id="type">
+            <option value="">--Type--</option>
+            <option>hygiène et toilette</option>
+            <option>soins esthétiques</option>
+            <option>produits solaires</option>
+            <option>beauté des mains et des pieds</option>
+            <option>produits de maquillage</option>
+            <option>entretien capillaires</option>
+            <option>parfums</option>
+          </select>
+          <small></small>
+          <samp></samp></div>
+        </div>
+        <div class="form-control">
+          <label>Est en Promotion:</label>
+          <div class="fm">
+            <div><label><input id="o" type="radio" title="g" name="P" value="Oui" >Oui</label></div>
+            <div><label><input id="n" type="radio" title="g" name="P" value="Non" >Non</label></div>
+          </div>
+          <div class="mis1"></div>
+        </div>
+        <div><input type="button" id="A" value="Ajouter" >
+          <input type="hidden" name="" id='contIdEdit'></div>
+      </form>
+      <div class="drops">
+        <div class="drop drop-1"></div>
+        <div class="drop drop-2"></div>
+        <div class="drop drop-3"></div>
+        <div class="drop drop-4"></div>
+        <div class="drop drop-5"></div>
+      </div>
+    </div>
+    <table class="table" id="productsdetails">
+      <thead>
+        <tr>
+          <th scope="col">Nom</th>
+          <th scope="col">Prix</th>
+          <th scope="col">Marque</th>
+          <th scope="col">Date Production</th>
+          <th scope="col">Type</th>
+          <th scope="col">Promotion</th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+    <h2>Delete Modal</h2>    
+    <div id="id01" class="modal">
+      <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">×</span>
+      <form class="modal-content" action="/action_page.php">
+        <div class="container">
+          <h1>Delete Row</h1>
+          <p>Are you sure you want to delete this row?</p>
+        
+          <div class="clearfix">
+            <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
+            <button type="button" onclick="delet()" class="deletebtn"  >Delete</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</body>
+</html>
