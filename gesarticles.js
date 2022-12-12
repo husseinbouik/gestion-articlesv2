@@ -12,7 +12,7 @@ let arr = [];
 let ajt = document.getElementById("A");
 var promo;
 const tableBody = document.querySelector("#productsdetails tbody");
-const contIdEdit = document.getElementById('contIdEdit');
+const contIdEdit = document.getElementById("contIdEdit");
 function validatenom(lnom) {
   if (lnom.value.trim() === "") {
     setErrorFor(lnom, "First name is required");
@@ -126,6 +126,7 @@ function boom() {
     arr.push(true);
   }
   console.log(arr.length);
+  console.log(promo);
 }
 function setErrorFor(input, message) {
   const formControl = input.parentElement;
@@ -140,92 +141,139 @@ function setSuccessFor(input, message) {
   samp.innerText = message;
 }
 ajt.onclick = function getitdone() {
-    if (ajt.value === "Ajouter") {
+  if (ajt.value === "Ajouter") {
+    arr.length = 0;
+    boom();
+    if (arr.length != 6) {
       arr.length = 0;
       boom();
-      if (arr.length != 6) {
-        arr.length = 0;
-        boom();
-      } else {
-        let id = Math.floor(Math.random() * 1000000);
-        const newEmp = new Product(id, nom.value, prix.value, marque.value, date.value, type.value, promo);
-        newEmp.showData().storeProduct();
-        nom.value = '';
-        prix.value = '';
-        marque.value = '';
-        date.value = '';
-        type.value = '';
-        Promo[0].checked = Promo[0].unchecked;
-        Promo[1].checked = Promo[1].unchecked;
-      }
-    } else if (ajt.value === "Modifier") {
+    } else {
+      let id = Math.floor(Math.random() * 1000000);
+      const newProd = new Product(
+        id,
+        nom.value,
+        prix.value,
+        marque.value,
+        date.value,
+        type.value,
+        promo
+      );
+      newProd.showData().storeProduct();
+      nom.value = "";
+      prix.value = "";
+      marque.value = "";
+      date.value = "";
+      type.value = "";
+      Promo[0].checked = Promo[0].unchecked;
+      Promo[1].checked = Promo[1].unchecked;
+    }
+  } else if (ajt.value === "Modifier") {
+    arr.length = 0;
+    boom();
+    if (arr.length != 6) {
       arr.length = 0;
       boom();
-      if (arr.length != 6) {
-        arr.length = 0;
-        boom();
-      } else {
-        document.getElementById("A").value = "Ajouter";
-        const id = contIdEdit.value;
-        const newEmp = new Product(id, nom.value, prix.value, marque.value, date.value, type.value, promo);
-        newEmp.updateProduct(id);
-        tableBody.innerHTML = "";
-        Product.showAllProducts();
-        nom.value = '';
-        prix.value = '';
-        marque.value = '';
-        date.value = '';
-        type.value = '';
-        Promo[0].checked = Promo[0].unchecked;
-        Promo[1].checked = Promo[1].unchecked;
-      }
+    } else {
+      document.getElementById("A").value = "Ajouter";
+      const id = contIdEdit.value;
+      const newProd = new Product(
+        id,
+        nom.value,
+        prix.value,
+        marque.value,
+        date.value,
+        type.value,
+        promo
+      );
+      newProd.updateProduct(id);
+      tableBody.innerHTML = "";
+      Product.showAllProducts();
+      nom.value = "";
+      prix.value = "";
+      marque.value = "";
+      date.value = "";
+      type.value = "";
+      Promo[0].checked = Promo[0].unchecked;
+      Promo[1].checked = Promo[1].unchecked;
     }
-   
-  };
-  
-  class Product {
-    constructor(id, nom, prix, marque, date, type, promo) {
-      this.id = id;
-      this.nom = nom;
-      this.prix = prix;
-      this.marque = marque;
-      this.date = date;
-      this.type = type;
-      this.promo = promo;
+  }
+};
+
+class Product {
+  constructor(id, nom, prix, marque, date, type, promo) {
+    this.id = id;
+    this.nom = nom;
+    this.prix = prix;
+    this.marque = marque;
+    this.date = date;
+    this.type = type;
+    this.promo = promo;
+  }
+  showData() {
+    Product.showHtml(
+      this.id,
+      this.nom,
+      this.prix,
+      this.marque,
+      this.date,
+      this.type,
+      this.promo
+    );
+    return this;
+  }
+  storeProduct() {
+    const allData = JSON.parse(localStorage.getItem("products")) ?? [];
+    allData.push({
+      id: this.id,
+      nom: this.nom,
+      prix: this.prix,
+      marque: this.marque,
+      date: this.date,
+      type: this.type,
+      promo: this.promo,
+    });
+    localStorage.setItem("products", JSON.stringify(allData));
+  }
+  static showAllProducts() {
+    if (localStorage.getItem("products")) {
+      JSON.parse(localStorage.getItem("products")).forEach((item) => {
+        Product.showHtml(
+          item.id,
+          item.nom,
+          item.prix,
+          item.marque,
+          item.date,
+          item.type,
+          item.promo
+        );
+      });
     }
-    showData() {
-      Product.showHtml(this.id, this.nom, this.prix, this.marque, this.date, this.type, this.promo);
-      return this;
-    }
-    storeProduct() {
-      const allData = JSON.parse(localStorage.getItem('products')) ?? [];
-      allData.push({ id: this.id, nom: this.nom, prix: this.prix, marque: this.marque, date: this.date, type: this.type, promo: this.promo })
-      localStorage.setItem('products', JSON.stringify(allData))
-    }
-    static showAllProducts() {
-      if (localStorage.getItem('products')) {
-        JSON.parse(localStorage.getItem('products')).forEach((item) => {
-          Product.showHtml(item.id, item.nom, item.prix, item.marque, item.date, item.type, item.promo);
-  
-        })
-  
-      }
-    }
-    updateProduct(id) {
-      const newItem = { id: id, nom: this.nom, prix: this.prix, marque: this.marque, date: this.date, type: this.type, promo: this.promo };
-      const updateData = JSON.parse(localStorage.getItem("products")).map((item) => {
+  }
+  updateProduct(id) {
+    const newItem = {
+      id: id,
+      nom: this.nom,
+      prix: this.prix,
+      marque: this.marque,
+      date: this.date,
+      type: this.type,
+      promo: this.promo,
+    };
+    const updateData = JSON.parse(localStorage.getItem("products")).map(
+      (item) => {
         if (item.id == id) {
           return newItem;
         }
         return item;
-      })
-  
-      localStorage.setItem("products", JSON.stringify(updateData));
-    }
-  
-    static showHtml(id, nom, prix, marque, date, type, promo) {
-      const trEl = document.createElement('tr');
-      trEl.innerHTML = `
+      }
+    );
+
+    localStorage.setItem("products", JSON.stringify(updateData));
+  }
+
+  static showHtml(id, nom, prix, marque, date, type, promo) {
+    const trEl = document.createElement("tr");
+    trEl.innerHTML = `
               <tr  role='row'>
               <td>${nom}</td>
               <td>${prix}</td>
@@ -235,47 +283,53 @@ ajt.onclick = function getitdone() {
               <td>${promo}</td>
                   <td>
                       <button   class="btn btn-info edit" data-id="${id}">Edit</button>
-                      <button onclick="onDelete(this)" class="btn btn-danger delete" data-id="${id}">Delete</button>
+                      <button  class="btn btn-danger delete" data-id="${id}">Delete</button>
                   </td>
               </tr>
           `;
-      tableBody.appendChild(trEl);
-    }
+    tableBody.appendChild(trEl);
   }
-  Product.showAllProducts();
-  tableBody.addEventListener("click", (e) => {
+}
+Product.showAllProducts();
+tableBody.addEventListener("click", (e) => {
+  if (e.target.classList.contains("delete")) {
+    const id = +e.target.getAttribute("data-id");
+    const Prods = JSON.parse(localStorage.getItem("products"));
+    const newData = Prods.filter((el) => el.id != +id);
+    localStorage.setItem("products", JSON.stringify(newData));
+    e.target.parentElement.parentElement.remove();
+  }
 
-
-    if (e.target.classList.contains("delete")) {
-        const id = +e.target.getAttribute("data-id");
-        const emps = JSON.parse(localStorage.getItem('products'))
-        const newData = emps.filter((el) => el.id != +id);
-        localStorage.setItem("products", JSON.stringify(newData));
-        e.target.parentElement.parentElement.remove();
+  if (e.target.classList.contains("edit")) {
+    const id =+ e.target.getAttribute("data-id");
+    const mainItem = JSON.parse(localStorage.getItem("products")).find(item => item.id === id);
+    contIdEdit.value = id;
+    nom.value = mainItem.nom;
+    prix.value = mainItem.prix;
+    marque.value = mainItem.marque;
+    date.value = mainItem.date;
+    type.value = mainItem.type;
+    if (promo === document.getElementById("o").value) {
+      document.getElementById("o").checked = true;
+    } else {
+      document.getElementById("n").checked = true;
     }
-
-
-    if (e.target.classList.contains("edit")) {
-        const id = +e.target.getAttribute("data-id");
-        const mainItem = JSON.parse(localStorage.getItem('products')).find(item => item.id === id);
-        contIdEdit.value = id;
-        nom.value = mainItem.nom;
-        prix.value = mainItem.prix;
-        marque.value = mainItem.marque;
-        date.value = mainItem.date;
-        type.value = mainItem.type;
-        console.log(promo)
-        if (promo === document.getElementById("o").value) {
-          document.getElementById("o").checked = true;
-        } else {
-          document.getElementById("n").checked = true;
-        }
-      
-        document.getElementById("A").value = "Modifier";
-
-
-    }
-})
+    console.log(promo);
+    document.getElementById("A").value = "Modifier";
+    console.log(test(mainItem.nom));
+    console.log(test(mainItem.prix));
+    console.log(test(mainItem.marque));
+    console.log(test(mainItem.date));
+    console.log(test(mainItem.promo));
+    console.log(test(mainItem.type));
+  }
+});
+function test(t) {
+  if (t === undefined) {
+    return 'Undefined value!';
+  }
+  return t;
+}
 // ajt.onclick = function getitdone() {
 //   if (ajt.value === "Ajouter") {
 //     arr.length = 0;
