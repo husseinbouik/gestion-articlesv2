@@ -108,12 +108,12 @@ function boom() {
     arr.push(true);
     mis1.innerHTML = "Look good !";
     mis1.style.color = "green";
-    promo = document.getElementById("o").value;
+    promo = "Oui";
   } else if (Promo[1].checked) {
     arr.push(true);
     mis1.innerHTML = "Look good !";
     mis1.style.color = "green";
-    promo = document.getElementById("n").value;
+    promo = "Non";
   } else {
     mis1.innerHTML = "Choose one";
     mis1.style.color = "red";
@@ -149,6 +149,7 @@ ajt.onclick = function getitdone() {
       boom();
     } else {
       let id = Math.floor(Math.random() * 1000000);
+      console.log(id);
       const newProd = new Product(
         id,
         nom.value,
@@ -175,7 +176,7 @@ ajt.onclick = function getitdone() {
       boom();
     } else {
       document.getElementById("A").value = "Ajouter";
-      const id = contIdEdit.value;
+      var id = contIdEdit.value;
       const newProd = new Product(
         id,
         nom.value,
@@ -267,9 +268,14 @@ class Product {
         return item;
       }
     );
-
+// console.log(mainItem);
     localStorage.setItem("products", JSON.stringify(updateData));
-  }
+//     const object = { name: 'John Smith' };
+// const json = JSON.stringify(object);  // {"name":"John Smith"}
+// console.log(json);
+// const unquoted = json.replace(/"([^"]+)":/g, '$1:');
+// console.log(unquoted);  // {name:"John Smith"}
+//   }
 
   static showHtml(id, nom, prix, marque, date, type, promo) {
     const trEl = document.createElement("tr");
@@ -299,34 +305,34 @@ tableBody.addEventListener("click", (e) => {
     localStorage.setItem("products", JSON.stringify(newData));
     e.target.parentElement.parentElement.remove();
   }
-
   if (e.target.classList.contains("edit")) {
-    const id =+ e.target.getAttribute("data-id");
-    const mainItem = JSON.parse(localStorage.getItem("products")).find(item => item.id === id);
-    contIdEdit.value = id;
-    nom.value = mainItem.nom;
-    prix.value = mainItem.prix;
-    marque.value = mainItem.marque;
-    date.value = mainItem.date;
-    type.value = mainItem.type;
-    if (promo === document.getElementById("o").value) {
-      document.getElementById("o").checked = true;
-    } else {
-      document.getElementById("n").checked = true;
-    }
-    console.log(promo);
-    document.getElementById("A").value = "Modifier";
-    console.log(test(mainItem.nom));
-    console.log(test(mainItem.prix));
-    console.log(test(mainItem.marque));
-    console.log(test(mainItem.date));
-    console.log(test(mainItem.promo));
-    console.log(test(mainItem.type));
+    const id = +e.target.getAttribute("data-id");
+    console.log(id);
+    const mainItem = JSON.parse(localStorage.getItem("products")).find(
+      (item) => item.id === id
+    );
+    console.log(id);
+      contIdEdit.value = id;
+      nom.value = mainItem.nom;
+      prix.value = mainItem.prix;
+      marque.value = mainItem.marque;
+      date.value = mainItem.date;
+      type.value = mainItem.type;
+
+      if (mainItem.promo === "Oui") {
+        document.getElementById("o").checked = true;
+      } else {
+        document.getElementById("n").checked = true;
+      }
+      console.log(promo);
+      document.getElementById("A").value = "Modifier"; 
+
+    console.log(mainItem);
   }
 });
 function test(t) {
   if (t === undefined) {
-    return 'Undefined value!';
+    return "Undefined value!";
   }
   return t;
 }
