@@ -275,7 +275,7 @@ class Product {
 // console.log(json);
 // const unquoted = json.replace(/"([^"]+)":/g, '$1:');
 // console.log(unquoted);  // {name:"John Smith"}
-//   }
+  }
 
   static showHtml(id, nom, prix, marque, date, type, promo) {
     const trEl = document.createElement("tr");
