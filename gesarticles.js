@@ -306,10 +306,10 @@ tableBody.addEventListener("click", (e) => {
     e.target.parentElement.parentElement.remove();
   }
   if (e.target.classList.contains("edit")) {
-    const id = +e.target.getAttribute("data-id");
-    console.log(id);
+    const id = e.target.getAttribute("data-id");
+    // console.log(id);
     const mainItem = JSON.parse(localStorage.getItem("products")).find(
-      (item) => item.id === id
+      (item) => item.id == id
     );
     console.log(id);
       contIdEdit.value = id;
