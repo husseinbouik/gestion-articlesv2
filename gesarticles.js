@@ -1,3 +1,4 @@
+// get element from HTML code
 const form = document.getElementById("form");
 const nom = document.getElementById("nom");
 const prix = document.getElementById("prix");
@@ -13,6 +14,7 @@ let ajt = document.getElementById("A");
 var promo;
 const tableBody = document.querySelector("#productsdetails tbody");
 const contIdEdit = document.getElementById("contIdEdit");
+// validation onkeyup
 function validatenom(lnom) {
   if (lnom.value.trim() === "") {
     setErrorFor(lnom, "First name is required");
@@ -55,7 +57,7 @@ prix.addEventListener("keyup", function () {
 marque.addEventListener("keyup", function () {
   validatemarque(marque);
 });
-
+// Final validation
 function boom() {
   const nomValue = nom.value.trim();
   const prixValue = prix.value.trim();
@@ -85,7 +87,6 @@ function boom() {
   } else {
     setErrorFor(prix, "price is invalid");
   }
-  console.log(arr.length);
   if (marqueValue === "") {
     setErrorFor(marque, "marque is required");
   } else if (marqueValue.length < 2 || marqueValue.length > 30) {
@@ -94,14 +95,12 @@ function boom() {
     setSuccessFor(marque, "Looks Good!");
     arr.push(true);
   }
-  console.log(arr.length);
   if (dateValue === "") {
     setErrorFor(date, "Date is required");
   } else {
     setSuccessFor(date, "Looks Good!");
     arr.push(true);
   }
-  console.log(arr.length);
   var gen = !Promo[0].checked && !Promo[1].checked;
 
   if (Promo[0].checked) {
@@ -125,8 +124,6 @@ function boom() {
     setSuccessFor(type, "Looks good!");
     arr.push(true);
   }
-  console.log(arr.length);
-  console.log(promo);
 }
 function setErrorFor(input, message) {
   const formControl = input.parentElement;
@@ -140,7 +137,9 @@ function setSuccessFor(input, message) {
   formControl.className = "form-control success";
   samp.innerText = message;
 }
+// A Function to add & modify elements in the table
 ajt.onclick = function getitdone() {
+  // Add In case the value of the input is "Ajouter"
   if (ajt.value === "Ajouter") {
     arr.length = 0;
     boom();
@@ -148,6 +147,7 @@ ajt.onclick = function getitdone() {
       arr.length = 0;
       boom();
     } else {
+      // Give the id a random number to identefy the element & easyfy the modification process
       let id = Math.floor(Math.random() * 1000000);
       console.log(id);
       const newProd = new Product(
@@ -159,6 +159,7 @@ ajt.onclick = function getitdone() {
         type.value,
         promo
       );
+      // show & store the added data
       newProd.showData().storeProduct();
       nom.value = "";
       prix.value = "";
@@ -168,9 +169,11 @@ ajt.onclick = function getitdone() {
       Promo[0].checked = Promo[0].unchecked;
       Promo[1].checked = Promo[1].unchecked;
     }
+    // Modify In case the value of the input is "Modifier"
   } else if (ajt.value === "Modifier") {
     arr.length = 0;
     boom();
+    // make sure that all the input's values are valide before jumping to the next step of adding
     if (arr.length != 6) {
       arr.length = 0;
       boom();
@@ -186,6 +189,7 @@ ajt.onclick = function getitdone() {
         type.value,
         promo
       );
+      // Update and store the modified data
       newProd.updateProduct(id);
       tableBody.innerHTML = "";
       Product.showAllProducts();
@@ -199,7 +203,7 @@ ajt.onclick = function getitdone() {
     }
   }
 };
-
+// OOP
 class Product {
   constructor(id, nom, prix, marque, date, type, promo) {
     this.id = id;
@@ -268,13 +272,7 @@ class Product {
         return item;
       }
     );
-// console.log(mainItem);
     localStorage.setItem("products", JSON.stringify(updateData));
-//     const object = { name: 'John Smith' };
-// const json = JSON.stringify(object);  // {"name":"John Smith"}
-// console.log(json);
-// const unquoted = json.replace(/"([^"]+)":/g, '$1:');
-// console.log(unquoted);  // {name:"John Smith"}
   }
 
   static showHtml(id, nom, prix, marque, date, type, promo) {
@@ -305,77 +303,24 @@ tableBody.addEventListener("click", (e) => {
     localStorage.setItem("products", JSON.stringify(newData));
     e.target.parentElement.parentElement.remove();
   }
+  // edit the products data
   if (e.target.classList.contains("edit")) {
     const id = e.target.getAttribute("data-id");
-    // console.log(id);
     const mainItem = JSON.parse(localStorage.getItem("products")).find(
       (item) => item.id == id
     );
-    console.log(id);
-      contIdEdit.value = id;
-      nom.value = mainItem.nom;
-      prix.value = mainItem.prix;
-      marque.value = mainItem.marque;
-      date.value = mainItem.date;
-      type.value = mainItem.type;
-
-      if (mainItem.promo === "Oui") {
-        document.getElementById("o").checked = true;
-      } else {
-        document.getElementById("n").checked = true;
-      }
-      console.log(promo);
-      document.getElementById("A").value = "Modifier"; 
-
-    console.log(mainItem);
+    // stock the id of each product in "contIdEdit.value"
+    contIdEdit.value = id;
+    nom.value = mainItem.nom;
+    prix.value = mainItem.prix;
+    marque.value = mainItem.marque;
+    date.value = mainItem.date;
+    type.value = mainItem.type;
+    if (mainItem.promo === "Oui") {
+      document.getElementById("o").checked = true;
+    } else {
+      document.getElementById("n").checked = true;
+    }
+    document.getElementById("A").value = "Modifier";
   }
 });
-function test(t) {
-  if (t === undefined) {
-    return "Undefined value!";
-  }
-  return t;
-}
-// ajt.onclick = function getitdone() {
-//   if (ajt.value === "Ajouter") {
-//     arr.length = 0;
-//     boom();
-//     if (arr.length != 6) {
-//       arr.length = 0;
-//       boom();
-//     } else {
-//       var formData = readFormData();
-//       insertNewRecord(formData);
-//       resetform();
-//     }
-//   } else if (ajt.value === "Modifier") {
-//     arr.length = 0;
-//     boom();
-//     if (arr.length != 6) {
-//       arr.length = 0;
-//       boom();
-//     } else {
-//       var formData = readFormData();
-//       updateRecord(formData);
-//       resetform();
-//       document.getElementById("A").value = "Ajouter";
-//     }
-//   }
-// };
-// let getrow
-// function onDelete(td) {
-//   getrow=td.parentElement.parentElement;
-//   document.getElementById('id01').style.display='block'
-// }
-// function delet()
-// {
-//   document.getElementById("productsdetails").deleteRow(getrow.rowIndex);
-//   document.getElementById('id01').style.display='none'
-// }
-// console.log(getrow.rowIndex)
-// var modal = document.getElementById("id01");
-// window.onclick = function (event) {
-//   if (event.target == modal) {
-//     modal.style.display = "none";
-//   }
-// };
